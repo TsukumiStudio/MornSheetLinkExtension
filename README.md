@@ -31,7 +31,7 @@ HTMLを受け付ける貼り付け先ではクリック可能なリンクにな�
 
 - `python3 scripts/package.py`：`dist/` にストア提出用ZIPを生成します。PSD、説明文、テストはZIPに含めません。
 - [アイコンPSD](assets/source/icon.psd)：512×512、背景・表・リンク下地・リンクの4レイヤー。各レイヤーはラスターレイヤーです。
-- [FHD OGP画像](assets/ogp-preview.png)／[OGP用PSD](assets/source/ogp.psd)：1920×1080、6レイヤー。原稿は [SVG](assets/source/ogp.svg)、再生成は `python3 scripts/build_thumbnail.py ogp`。文字はラスターレイヤーです。
+- [FHD OGP画像](assets/ogp-tsukumi.png)／[OGP用PSD](assets/source/ogp-tsukumi.psd)：1920×1080、6レイヤー。MornDesktopTubeのOGPを参考に、[TSUKUMI STUDIO](https://tsukumistudio.com/)の生成り・オリーブ・黄緑に配色を統一しています。原稿は [SVG](assets/source/ogp.svg)、再生成は `python3 scripts/build_thumbnail.py ogp`。文字はラスターレイヤーです。
 - [サムネイルPSD](assets/source/thumbnail.psd)：440×280、背景・アイコン・タイトル・説明文・帯背景・帯文字の6レイヤー。文字もラスターレイヤーです。文字内容の編集は [SVG](assets/source/promo.svg) で行い、`python3 scripts/build_thumbnail.py` で再生成できます。
 - [アイコンSVG](assets/source/icon.svg)：形状を編集できるベクター原稿。
 - [アイコンプレビュー](assets/icon-preview.png)、[紹介画像](assets/promo-440x280.png)、[実画面スクリーンショット](assets/screenshot-1280x800.png)。

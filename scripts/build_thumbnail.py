@@ -43,7 +43,7 @@ with tempfile.TemporaryDirectory() as directory:
             position = tuple(round(float(embedded.get(key, '0'))) for key in ('x', 'y'))
             pixels.alpha_composite(picture.resize(dimensions, Image.Resampling.LANCZOS), position)
         psd.create_pixel_layer(pixels, name=name)
-stem = 'thumbnail' if artwork == 'promo' else 'ogp'
+stem = 'thumbnail' if artwork == 'promo' else 'ogp-tsukumi'
 output = root / f'assets/source/{stem}.psd'
 psd.save(output)
 reopened = PSDImage.open(output)
@@ -52,5 +52,6 @@ assert [layer.name for layer in reopened] == names
 composite = reopened.composite()
 if artwork == 'ogp':
     assert min(low for low, high in composite.convert('RGB').crop((920, 278, 1820, 840)).getextrema()) < 100, 'Screenshot is missing'
-composite.save(root / f'assets/{stem}-preview.png')
+preview = 'thumbnail-preview.png' if artwork == 'promo' else 'ogp-tsukumi.png'
+composite.save(root / f'assets/{preview}')
 print(output)
