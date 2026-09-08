@@ -9,10 +9,10 @@ from psd_tools import PSDImage
 
 root = Path(__file__).resolve().parents[1]
 parts = {
-    'Background': '<rect x="48" y="48" width="416" height="416" rx="96" fill="#24253f"/>',
-    'Sheet': '<rect x="120" y="116" width="256" height="244" rx="24" fill="none" stroke="#dad7ff" stroke-width="24"/><path d="M120 188h256M120 260h136M204 188v160" fill="none" stroke="#dad7ff" stroke-width="20"/>',
-    'Link backing': '<rect x="229" y="229" width="204" height="178" rx="62" fill="#24253f"/>',
-    'Link': '<g transform="rotate(-35 326 316)" fill="none" stroke="#79e8c5" stroke-width="24" stroke-linecap="round"><path d="M302 276h-26a40 40 0 0 0 0 80h26M350 276h26a40 40 0 0 1 0 80h-26M292 316h68"/></g>',
+    'Background': '<rect x="48" y="48" width="416" height="416" rx="96" fill="#424e16"/>',
+    'Sheet': '<rect x="120" y="116" width="256" height="244" rx="24" fill="none" stroke="#f5facc" stroke-width="24"/><path d="M120 188h256M120 260h136M204 188v160" fill="none" stroke="#f5facc" stroke-width="20"/>',
+    'Link backing': '<rect x="229" y="229" width="204" height="178" rx="62" fill="#424e16"/>',
+    'Link': '<g transform="rotate(-35 326 316)" fill="none" stroke="#a8be1a" stroke-width="24" stroke-linecap="round"><path d="M302 276h-26a40 40 0 0 0 0 80h26M350 276h26a40 40 0 0 1 0 80h-26M292 316h68"/></g>',
 }
 # Center the combined visible sheet/link bounds on the 512px canvas.
 for name in ('Sheet', 'Link backing', 'Link'):
