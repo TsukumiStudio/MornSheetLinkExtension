@@ -48,7 +48,7 @@ Chromeで `7:8`・`B2:D10` のメニュー表示・再表示・コピー成功�
 | [紹介画像PSD](assets/source/thumbnail.psd)／[SVG](assets/source/promo.svg) | 440×280、文字を含む6ラスターレイヤー。文言はSVGで編集し `python3 scripts/build_thumbnail.py` で再生成。 |
 
 配色はMornDesktopTubeのOGPと [TSUKUMI STUDIO](https://tsukumistudio.com/) に合わせています。
-提出画像：[アイコン](icons/icon-128.png)・[紹介画像](assets/promo-440x280.png)・[スクリーンショット](assets/screenshot-1280x800.png)。
+提出画像：[アイコン](icons/icon-128.png)・[紹介画像](assets/promo-440x280.png)・[スクリーンショット](assets/store-screenshot-1280x800.png)。
 
 - `python3 scripts/check_editable_ogp.py`：OGPの文字・レイヤー構成を検証。
 - `python3 scripts/build_icon.py`：アイコンを再生成。SVG・PSDへの手編集は上書きされます。
