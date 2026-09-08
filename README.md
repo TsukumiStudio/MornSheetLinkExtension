@@ -29,6 +29,8 @@ HTMLを受け付ける貼り付け先ではクリック可能なリンクにな�
 
 ## 公開用ファイル
 
+申請用のZIP・画像・入力文は `dist/chrome-web-store/` にまとめています（生成物、Git管理外）。最新版のZIPは `python3 scripts/package.py` で生成できます。掲載文・権限申告・審査操作手順は [ストア掲載文](docs/store-listing.md) を参照してください。
+
 - `python3 scripts/package.py`：`dist/` にストア提出用ZIPを生成します。PSD、説明文、テストはZIPに含めません。
 - [アイコンPSD](assets/source/icon.psd)：512×512、背景・表・リンク下地・リンクの4レイヤー。各レイヤーはラスターレイヤーです。
 - [FHD OGP画像](assets/ogp-editable.png)／[編集用PSD](assets/source/ogp-editable.psd)：1920×1080。**文字10個はPhotoshopのネイティブテキストレイヤー**で、文言・フォント・色を直接編集できます。全21要素を5グループに整理。アイコン部品・背景・帯・スクショは個別のラスターレイヤーです。MornDesktopTubeのOGPを参考に、[TSUKUMI STUDIO](https://tsukumistudio.com/)の生成り・オリーブ・黄緑に配色を統一しています。
