@@ -31,6 +31,7 @@ HTMLを受け付ける貼り付け先ではクリック可能なリンクにな�
 
 - `python3 scripts/package.py`：`dist/` にストア提出用ZIPを生成します。PSD、説明文、テストはZIPに含めません。
 - [アイコンPSD](assets/source/icon.psd)：512×512、背景・表・リンク下地・リンクの4レイヤー。各レイヤーはラスターレイヤーです。
+- [サムネイルPSD](assets/source/thumbnail.psd)：440×280、背景・アイコン・タイトル・説明文・帯背景・帯文字の6レイヤー。文字もラスターレイヤーです。文字内容の編集は [SVG](assets/source/promo.svg) で行い、`python3 scripts/build_thumbnail.py` で再生成できます。
 - [アイコンSVG](assets/source/icon.svg)：形状を編集できるベクター原稿。
 - [アイコンプレビュー](assets/icon-preview.png)、[紹介画像](assets/promo-440x280.png)、[実画面スクリーンショット](assets/screenshot-1280x800.png)。
 - [ストア掲載文と公開手順](docs/store-listing.md)、[プライバシーポリシー](docs/privacy.md)。
