@@ -26,3 +26,16 @@ HTMLを受け付ける貼り付け先ではクリック可能なリンクにな�
 実機確認：範囲選択 → Ex → Google Docs等に貼り付け → 表示名とクリック先を確認し、タブを切り替えて再度確認してください。
 
 拡張機能の実装方式：[Chrome content scripts](https://developer.chrome.com/docs/extensions/develop/concepts/content-scripts)、[clipboardWrite権限](https://developer.chrome.com/docs/extensions/reference/permissions-list)。
+
+## 公開用ファイル
+
+- `python3 scripts/package.py`：`dist/` にストア提出用ZIPを生成します。PSD、説明文、テストはZIPに含めません。
+- [アイコンPSD](assets/source/icon.psd)：512×512、背景・表・リンク下地・リンクの4レイヤー。各レイヤーはラスターレイヤーです。
+- [アイコンSVG](assets/source/icon.svg)：形状を編集できるベクター原稿。
+- [アイコンプレビュー](assets/icon-preview.png)、[紹介画像](assets/promo-440x280.png)、[実画面スクリーンショット](assets/screenshot-1280x800.png)。
+- [ストア掲載文と公開手順](docs/store-listing.md)、[プライバシーポリシー](docs/privacy.md)。
+
+配布チェック：`python3 scripts/check_package.py`。
+アイコンを作り直す場合：`python3 scripts/build_icon.py`（制作環境にImageMagick・Pillow・psd-toolsが必要。拡張利用時は不要）。SVGとPSDはこのスクリプトから生成されるため、再生成すると手編集は上書きされます。
+
+ストアへの審査提出・公開はまだ行っていません。提出時にサポート連絡先と公開済みプライバシーポリシーURLを登録してください。
