@@ -1,47 +1,59 @@
 # Morn Sheet Link Extension
 
-Googleスプレッドシートの右クリックメニューで「この範囲へのリンクを取得」の直下に「この範囲へのリンクを作成 Ex」を追加するChrome系ブラウザ用拡張です。日本語・英語のメニューに対応します。
+Google スプレッドシートの選択範囲を、ハイパーリンクとしてコピーするChrome拡張です。
 
-## 導入
+リンク名は `ファイル名_タブ名_範囲`。例：**売上管理_9月_B2:D10**
 
-1. Chromeの `chrome://extensions` を開き、デベロッパーモードを有効にします。
-2. 「パッケージ化されていない拡張機能を読み込む」で、このフォルダを指定します。
-3. 開いているスプレッドシートを再読み込みします。
-4. セル範囲を選択し、右クリック →「セルでの他の操作項目を表示」（行選択なら「行での他の操作項目を表示」）→「この範囲へのリンクを作成 Ex」を選びます。
+## インストール
 
-更新時は、利用しているブラウザの `chrome://extensions` でこの拡張の更新ボタン（丸矢印）を押し、その後スプシも再読み込みしてください。バージョン表示は `0.1.2` です。ChromeとArcなど、別ブラウザへのインストールは共有されません。
+1. `chrome://extensions` でデベロッパーモードを有効にします。
+2. 「パッケージ化されていない拡張機能を読み込む」で、このフォルダを選びます。
+3. スプレッドシートを再読み込みします。
 
-例：ファイル「売上管理」、タブ「9月」、範囲 `B2:D10` → **売上管理_9月_B2:D10** という表示名で、その範囲へのリンクをコピーします。
+更新時は拡張の丸矢印を押し、シートも再読み込みします。現在は `0.1.2`。Chrome・Arcなど、ブラウザごとに導入が必要です。
 
-HTMLを受け付ける貼り付け先ではクリック可能なリンクになります。プレーンテキストのみの貼り付け先では表示名だけになります。実際のリンク保持は貼り付け先の仕様によります。
+## 使い方
 
-## 制約と確認
+範囲を選択 → 右クリック →「セルでの他の操作項目を表示」→「この範囲へのリンクを作成 Ex」。行・列の選択時は、それぞれのメニューを開きます。
 
-- スプシの内部DOMに依存しています。Googleの画面変更や日本語・英語以外の表示言語では、項目追加・情報取得の調整が必要です。
-- 通常のセル・連続範囲・行全体・列全体に対応します。名前付き範囲や複数の離れた範囲は対象外です。
-- URLからタブIDを取得できない場合はコピーせずエラーを表示します。対象タブを切り替えて開き直してください。
-- サーバーへの送信、Google API認証、クリップボード読み取りは行いません。
-- 自動チェック：`node --test content.test.cjs`。模擬DOMでメニュー操作からコピー内容までを確認します。Chromeの実Google Sheetsでも、行範囲 `7:8` とセル範囲 `B2:D10` でExの表示位置・再表示・「コピーしました」表示まで確認済みです（0.1.2）。貼り付け先でのリンク保持は別途確認が必要です。
+Exは標準の「この範囲へのリンクを取得」の直下に表示されます。HTML対応の貼り付け先ではリンクに、テキストのみの場合はリンク名になります。
 
-実機確認：範囲選択 → Ex → Google Docs等に貼り付け → 表示名とクリック先を確認し、タブを切り替えて再度確認してください。
+## 対応範囲
 
-拡張機能の実装方式：[Chrome content scripts](https://developer.chrome.com/docs/extensions/develop/concepts/content-scripts)、[clipboardWrite権限](https://developer.chrome.com/docs/extensions/reference/permissions-list)。
+- セル・連続範囲・行全体・列全体。名前付き範囲と離れた複数範囲は対象外。
+- 日本語・英語のメニュー。Googleの画面変更で動かなくなる場合があります。
+- タブIDを取得できない場合はエラーになります。対象タブを開き直してください。
+- 外部送信・Google API認証・クリップボード読み取りはありません。
 
-## 公開用ファイル
+## 確認・配布
 
-申請用のZIP・画像・入力文は `dist/chrome-web-store/` にまとめています（生成物、Git管理外）。最新版のZIPは `python3 scripts/package.py` で生成できます。掲載文・権限申告・審査操作手順は [ストア掲載文](docs/store-listing.md) を参照してください。
+```sh
+node --test content.test.cjs
+python3 scripts/package.py
+python3 scripts/check_package.py
+```
 
-- `python3 scripts/package.py`：`dist/` にストア提出用ZIPを生成します。PSD、説明文、テストはZIPに含めません。
-- [アイコンPSD](assets/source/icon.psd)：512×512、背景・表・リンク下地・リンクの4レイヤー。各レイヤーはラスターレイヤーです。
-- [FHD OGP画像](assets/ogp-editable.png)／[編集用PSD](assets/source/ogp-editable.psd)：1920×1080。**文字10個はPhotoshopのネイティブテキストレイヤー**で、文言・フォント・色を直接編集できます。全21要素を5グループに整理。アイコン部品・背景・帯・スクショは個別のラスターレイヤーです。MornDesktopTubeのOGPを参考に、[TSUKUMI STUDIO](https://tsukumistudio.com/)の生成り・オリーブ・黄緑に配色を統一しています。
-- [サムネイルPSD](assets/source/thumbnail.psd)：440×280、背景・アイコン・タイトル・説明文・帯背景・帯文字の6レイヤー。文字もラスターレイヤーです。文字内容の編集は [SVG](assets/source/promo.svg) で行い、`python3 scripts/build_thumbnail.py` で再生成できます。
-- [アイコンSVG](assets/source/icon.svg)：形状を編集できるベクター原稿。
-- [アイコンプレビュー](assets/icon-preview.png)、[紹介画像](assets/promo-440x280.png)、[実画面スクリーンショット](assets/screenshot-1280x800.png)。
-- [ストア掲載文と公開手順](docs/store-listing.md)、[プライバシーポリシー](docs/privacy.md)。
+ZIPは `dist/` に生成します。PSD・説明文・テストは含みません。
 
-配布チェック：`python3 scripts/check_package.py`。
-アイコンを作り直す場合：`python3 scripts/build_icon.py`（制作環境にImageMagick・Pillow・psd-toolsが必要。拡張利用時は不要）。SVGとPSDはこのスクリプトから生成されるため、再生成すると手編集は上書きされます。
+Chromeで `7:8`・`B2:D10` のメニュー表示・再表示・コピー成功を確認済みです。実際の貼り付け先でのリンク名・移動先と、別タブへの切り替えは確認が必要です。
 
-ストアへの審査提出・公開はまだ行っていません。提出時にサポート連絡先と公開済みプライバシーポリシーURLを登録してください。
+申請素材は `dist/chrome-web-store/`。入力文と残る作業は [申請手順](docs/store-listing.md)、情報の扱いは [プライバシーポリシー](docs/privacy.md) を参照してください。審査提出・公開は未実施です。
 
-編集用OGPは `assets/source/ogp-editable.psd` をPhotoshopで直接編集し、PNGを書き出してください。`python3 scripts/check_editable_ogp.py` でテキスト種別・文言・構成を検証できます。旧 `build_thumbnail.py ogp` は比較用のラスターPSDを生成する処理で、編集用PSDには上書きしません。`prepare_editable_ogp.py` はPhotoshopでの再構築用に、文字を除く11要素と文字仕様を `dist/editable-ogp/` に出力します。
+## 画像を編集する
+
+| 原稿 | 内容・編集方法 |
+| --- | --- |
+| [OGP PSD](assets/source/ogp-editable.psd)／[PNG](assets/ogp-editable.png) | FHD。文字10個を直接編集可能。全21要素・5グループ。文字以外はラスターレイヤー。Photoshopで編集しPNGを書き出す。 |
+| [アイコンPSD](assets/source/icon.psd)／[SVG](assets/source/icon.svg) | 512×512、4ラスターレイヤー。SVGで形状を編集可能。 |
+| [紹介画像PSD](assets/source/thumbnail.psd)／[SVG](assets/source/promo.svg) | 440×280、文字を含む6ラスターレイヤー。文言はSVGで編集し `python3 scripts/build_thumbnail.py` で再生成。 |
+
+配色はMornDesktopTubeのOGPと [TSUKUMI STUDIO](https://tsukumistudio.com/) に合わせています。
+提出画像：[アイコン](icons/icon-128.png)・[紹介画像](assets/promo-440x280.png)・[スクリーンショット](assets/screenshot-1280x800.png)。
+
+- `python3 scripts/check_editable_ogp.py`：OGPの文字・レイヤー構成を検証。
+- `python3 scripts/build_icon.py`：アイコンを再生成。SVG・PSDへの手編集は上書きされます。
+- `python3 scripts/build_thumbnail.py ogp`：比較用のラスターPSDを生成。編集用OGPは上書きしません。
+- `python3 scripts/prepare_editable_ogp.py`：OGP再構築用の11要素と文字仕様を `dist/editable-ogp/` へ出力。
+
+画像の生成にはImageMagick・Pillow・psd-toolsが必要です。拡張の利用には不要です。
+実装資料：[content scripts](https://developer.chrome.com/docs/extensions/develop/concepts/content-scripts)・[clipboardWrite](https://developer.chrome.com/docs/extensions/reference/permissions-list)。

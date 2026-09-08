@@ -16,7 +16,7 @@
     // ponytail: DOM selectors support the current Sheets editor; update if Google changes its UI.
     if (!file || !sheet || !range || !/^\d+$/.test(gid ?? '') ||
         !/^(?:[A-Z]+[1-9]\d*(?::[A-Z]+[1-9]\d*)?|[A-Z]+:[A-Z]+|[1-9]\d*:[1-9]\d*)$/.test(range)) {
-      throw new Error('ファイル名・タブ名・選択範囲を取得できません。対象タブを開き直し、通常のセル範囲を選択してください。');
+      throw new Error('選択範囲を取得できません。タブを開き直し、セル範囲を選んでください。');
     }
     url.search = '';
     url.hash = `gid=${gid}&range=${encodeURIComponent(range)}`;
