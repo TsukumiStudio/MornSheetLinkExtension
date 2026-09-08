@@ -1,9 +1,10 @@
 (() => {
   const label = "この範囲へのリンクを作成 Ex";
-  const originalLabels = new Set([
+  const originalLabels = [
+    "この範囲へのリンクを取得", "このセルへのリンクを取得",
     "この範囲へのリンクを作成", "このセルへのリンクを作成",
     "Get link to this range", "Get link to this cell",
-  ]);
+  ].map(text => text.replace(/\s/g, '').toLowerCase());
 
   function readLink() {
     const file = document.querySelector('input.docs-title-input')?.value?.trim();
@@ -41,8 +42,10 @@
   }
 
   function addMenuItem() {
-    for (const original of document.querySelectorAll('[role="menuitem"]')) {
-      if (!originalLabels.has(original.textContent.trim()) ||
+    for (const original of document.querySelectorAll('[role="menuitem"], .goog-menuitem')) {
+      const text = original.textContent.replace(/\s/g, '').toLowerCase();
+      if (original.matches('.morn-sheet-link') ||
+          !originalLabels.some(label => text.startsWith(label)) ||
           original.parentElement.querySelector('.morn-sheet-link')) continue;
       const button = document.createElement('button');
       button.type = 'button';
@@ -60,6 +63,8 @@
     }
   }
 
-  new MutationObserver(addMenuItem).observe(document.body, { childList: true, subtree: true });
+  new MutationObserver(addMenuItem).observe(document.body, {
+    childList: true, characterData: true, subtree: true,
+  });
   addMenuItem();
 })();

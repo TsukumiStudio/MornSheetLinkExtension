@@ -11,7 +11,8 @@ test('Ex menu copies escaped HTML and current selection, rejects unknown ranges'
     '#t-name-box': { value: 'B2:D10' },
   };
   const original = {
-    textContent: 'この範囲へのリンクを作成',
+    textContent: 'この範囲へのリンクを取得',
+    matches: () => false,
     parentElement: { querySelector: () => button },
     after: node => { button = node; },
   };
@@ -22,7 +23,7 @@ test('Ex menu copies escaped HTML and current selection, rejects unknown ranges'
     document: {
       body: {},
       querySelector: selector => fields[selector],
-      querySelectorAll: () => [original],
+      querySelectorAll: selector => selector.includes('.goog-menuitem') ? [original] : [],
       createElement: tag => tag === 'a' ? {
         get outerHTML() { return `<a href="${escape(this.href)}">${escape(this.textContent)}</a>`; },
       } : { handlers: {}, setAttribute() {}, addEventListener(type, fn) { this.handlers[type] = fn; } },
