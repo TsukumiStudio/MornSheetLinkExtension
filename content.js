@@ -1,4 +1,5 @@
 (() => {
+  document.documentElement.setAttribute('data-morn-sheet-link', '0.1.2');
   const label = "この範囲へのリンクを作成 Ex";
   const originalLabels = [
     "この範囲へのリンクを取得", "このセルへのリンクを取得",
@@ -45,19 +46,28 @@
     for (const original of document.querySelectorAll('[role="menuitem"], .goog-menuitem')) {
       const text = original.textContent.replace(/\s/g, '').toLowerCase();
       if (original.matches('.morn-sheet-link') ||
-          !originalLabels.some(label => text.startsWith(label)) ||
-          original.parentElement.querySelector('.morn-sheet-link')) continue;
+          !originalLabels.some(label => text.startsWith(label))) continue;
+      const existing = original.parentElement.querySelector('.morn-sheet-link');
+      if (existing) {
+        if (original.nextElementSibling !== existing) original.after(existing);
+        continue;
+      }
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'morn-sheet-link';
       button.setAttribute('role', 'menuitem');
       button.textContent = label;
       // Keep Sheets from consuming the click or moving the selected range.
-      button.addEventListener('mousedown', event => event.stopPropagation());
-      button.addEventListener('click', event => {
+      button.addEventListener('mousedown', event => {
+        if (event.button !== 0) return;
         event.preventDefault();
         event.stopPropagation();
         void copyLink(button);
+      });
+      button.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        if (event.detail === 0) void copyLink(button);
       });
       original.after(button);
     }

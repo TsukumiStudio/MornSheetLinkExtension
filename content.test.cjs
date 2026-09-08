@@ -14,7 +14,7 @@ test('Ex menu copies escaped HTML and current selection, rejects unknown ranges'
     textContent: 'この範囲へのリンクを取得',
     matches: () => false,
     parentElement: { querySelector: () => button },
-    after: node => { button = node; },
+    after: node => { button = node; original.nextElementSibling = node; },
   };
   const escape = text => text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('"', '&quot;');
   const context = {
@@ -22,6 +22,7 @@ test('Ex menu copies escaped HTML and current selection, rejects unknown ranges'
     location: { href: 'https://docs.google.com/spreadsheets/d/example/edit?usp=sharing#gid=123' },
     document: {
       body: {},
+      documentElement: { setAttribute() {} },
       querySelector: selector => fields[selector],
       querySelectorAll: selector => selector.includes('.goog-menuitem') ? [original] : [],
       createElement: tag => tag === 'a' ? {
@@ -39,8 +40,13 @@ test('Ex menu copies escaped HTML and current selection, rejects unknown ranges'
   const first = button;
   observe();
   assert.equal(button, first, 'menu must not duplicate');
+  original.nextElementSibling = null; // Sheets rebuilds and reorders its menu.
+  observe();
+  assert.equal(original.nextElementSibling, first, 'Ex stays below the native link item');
   async function click() {
-    button.handlers.click({ preventDefault() {}, stopPropagation() {} });
+    let prevented = false;
+    button.handlers.mousedown({ button: 0, preventDefault() { prevented = true; }, stopPropagation() {} });
+    assert.ok(prevented, 'mouse down must not move focus out of the menu');
     await new Promise(resolve => setImmediate(resolve));
   }
   await click();

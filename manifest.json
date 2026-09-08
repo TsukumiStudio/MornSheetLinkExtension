@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Morn Sheet Link Extension",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "選択範囲へのリンクを、ファイル名_タブ名_範囲のハイパーテキストとしてコピーします。",
   "permissions": ["clipboardWrite"],
   "content_scripts": [{
