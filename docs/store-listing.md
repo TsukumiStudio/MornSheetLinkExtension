@@ -38,7 +38,9 @@ Googleの公式製品ではありません。Googleの画面変更により動�
 | 言語・価格 | 日本語・無料 |
 | カテゴリ | 生産性のツールに該当する項目 |
 
-ウェブサイト・サポート・プライバシーポリシーには、公開済みのURLを登録します。
+プライバシーポリシー：https://github.com/matsufriends/MornSheetLinkExtension/blob/main/docs/privacy.md
+
+サポート：https://github.com/matsufriends/MornSheetLinkExtension/issues
 
 ## 提出ファイル
 
@@ -69,7 +71,7 @@ Googleアカウントと編集可能なシートを使います。拡張専用�
 3. 開発者ダッシュボードへZIP・画像・掲載文・申告内容を登録します。
 4. 以下の未確認項目を済ませ、審査に提出します。初回は承認後の手動公開を選びます。
 
-未確認：ポリシーの公開URL、サポート窓口、開発者登録・連絡先認証、実際の貼り付け先でのリンク名と移動先。
+未確認：開発者登録・連絡先認証、実際の貼り付け先でのリンク名と移動先。
 Chromeでのメニュー表示・コピー成功は確認済み。審査提出・公開は未実施です。
 
 公式資料：[公開準備](https://developer.chrome.com/docs/webstore/prepare)・[画像要件](https://developer.chrome.com/docs/webstore/images)・[公開手順](https://developer.chrome.com/docs/webstore/publish/)。
