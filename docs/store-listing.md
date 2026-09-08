@@ -1,5 +1,7 @@
 # Chrome ウェブストア申請
 
+2026年9月8日：審査提出済み（ユーザー報告）。審査結果待ち。
+
 ## 掲載名
 
 Morn Sheet Link Extension
@@ -64,14 +66,13 @@ Googleアカウントと編集可能なシートを使います。拡張専用�
 5. リンク名が「売上管理_9月_B2:D10」で、元のシートの選択範囲へ移動することを確認します。URLには対象タブの `gid` と `range=B2%3AD10` が入ります。
 6. 別タブでも試し、リンク名と移動先が変わることを確認します。
 
-## 提出まで
+## 次回の提出手順
 
 1. `node --test content.test.cjs` でテストします。
 2. `python3 scripts/package.py` でZIPを作り、`python3 scripts/check_package.py` で検証します。
 3. 開発者ダッシュボードへZIP・画像・掲載文・申告内容を登録します。
 4. 以下の未確認項目を済ませ、審査に提出します。初回は承認後の手動公開を選びます。
 
-未確認：開発者登録・連絡先認証、実際の貼り付け先でのリンク名と移動先。
-Chromeでのメニュー表示・コピー成功は確認済み。審査提出・公開は未実施です。
+Chromeでのメニュー表示・コピー成功は確認済み。実際の貼り付け先でのリンク名・移動先は、こちらでは未確認です。
 
 公式資料：[公開準備](https://developer.chrome.com/docs/webstore/prepare)・[画像要件](https://developer.chrome.com/docs/webstore/images)・[公開手順](https://developer.chrome.com/docs/webstore/publish/)。
