@@ -1,5 +1,7 @@
 # Morn Sheet Link Extension
 
+![MornSheetLink：選択範囲を、リンクでコピー。](assets/ogp-editable.png)
+
 Google スプレッドシートの選択範囲を、名前付きのリンクとしてコピーするChrome拡張です。バージョン **0.1.3**。
 
 ## インストール・更新
@@ -48,6 +50,8 @@ ZIPは `dist/MornSheetLinkExtension-0.1.3.zip` に生成します。実行用フ
 
 ## 画像の原稿
 
-[OGP PSD](assets/source/ogp-editable.psd)・[アイコンPSD](assets/source/icon.psd)・[紹介画像PSD](assets/source/thumbnail.psd)。OGPはPhotoshopで文字を編集し、PNGを書き出します。
+[OGP PSD](assets/source/ogp-editable.psd)・[アイコンPSD](assets/source/icon.psd)・[紹介画像PSD](assets/source/thumbnail.psd)。OGPは1200×630、アイコン原稿は1024×1024です。READMEとGitHubのSocial Previewには [OGP PNG](assets/ogp-editable.png) を使います。
 
-再生成・検証用スクリプトは `scripts/` にあります。画像生成にはImageMagick・Pillow・psd-toolsが必要です。`build_icon.py` はSVG・PSDへの手編集を上書きします。
+OGPはMornDesktopTube、アイコンはMornStorageのPSDを複製して編集しています。元PSDは [reference/](assets/source/reference/) に保存。OGPの背景・配置・フォント・文字サイズを引き継ぎ、文章はテキストレイヤー、図とアイコンは埋め込みスマートオブジェクトで編集できます。複製元の不要な図は非表示で残しています。
+
+PhotoshopでPSDを保存し、OGPをPNGへ書き出してください。`python3 scripts/check_editable_ogp.py` で元PSDとの書式一致を検証し、`python3 scripts/build_icon.py` でPSDから拡張用の各サイズを出力します（Pillow・psd-toolsが必要）。`build_thumbnail.py` と `prepare_editable_ogp.py` は旧ストア画像用で、現在のOGPの再生成には使いません。
