@@ -50,6 +50,9 @@ Googleの公式製品ではありません。Googleの画面変更により動�
 | --- | --- |
 | ZIP | `dist/MornSheetLinkExtension-0.1.3.zip` |
 | アイコン | `icons/icon-128.png` |
+| スクリーンショット | `assets/store-screenshot-1280x800.png` |
+
+編集用原稿：[1280×800 PSD](../assets/source/store-screenshot-1280x800.psd)。
 
 ## 審査用の操作手順
 
