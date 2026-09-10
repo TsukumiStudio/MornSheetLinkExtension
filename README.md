@@ -1,31 +1,40 @@
 # Morn Sheet Link Extension
 
-Google スプレッドシートの選択範囲を、ハイパーリンクとしてコピーするChrome拡張です。
+Google スプレッドシートの選択範囲を、名前付きのリンクとしてコピーするChrome拡張です。バージョン **0.1.3**。
 
-リンク名は `ファイル名_タブ名_範囲`。例：**売上管理_9月_B2:D10**
-
-## インストール
+## インストール・更新
 
 1. `chrome://extensions` でデベロッパーモードを有効にします。
 2. 「パッケージ化されていない拡張機能を読み込む」で、このフォルダを選びます。
 3. スプレッドシートを再読み込みします。
 
-更新時は拡張の丸矢印を押し、シートも再読み込みします。現在は `0.1.2`。Chrome・Arcなど、ブラウザごとに導入が必要です。
+更新時は拡張の更新ボタンを押し、シートも再読み込みしてください。Chrome・Arcなど、ブラウザごとに導入が必要です。
 
-## 使い方
+## 右クリックからコピー
 
-範囲を選択 → 右クリック →「セルでの他の操作項目を表示」→「この範囲へのリンクを作成 Ex」。行・列の選択時は、それぞれのメニューを開きます。
+範囲を選択 → 右クリック →「セルでの他の操作項目を表示」→「この範囲へのリンクを取得Ex」。行・列を選んだ場合は、それぞれのメニューを開きます。Exは標準のリンク取得項目の直下にあります。
 
-Exは標準の「この範囲へのリンクを取得」の直下に表示されます。HTML対応の貼り付け先ではリンクに、テキストのみの場合はリンク名になります。
+処理中は「コピー中…」と表示し、**コピー成功後にメニューを閉じます**。失敗時は閉じずにエラーを表示します。貼り付け先がHTML対応ならリンクに、テキストのみならリンク名になります。
 
-## 対応範囲
+リンク名は `ファイル名-タブ名-範囲`。要素を `-`、区間を `〜` でつなぎます。
 
-- セル・連続範囲・行全体・列全体。名前付き範囲と離れた複数範囲は対象外。
-- 日本語・英語のメニュー。Googleの画面変更で動かなくなる場合があります。
-- タブIDを取得できない場合はエラーになります。対象タブを開き直してください。
-- 外部送信・Google API認証・クリップボード読み取りはありません。
+| 選択 | リンク名の例 |
+| --- | --- |
+| セル範囲 | `売上管理-9月-B2〜D10` |
+| 行全体：A列の値を使用 | `売上管理-9月-item_honya行` |
+| 列全体：1行目の値を使用 | `売上管理-9月-label〜description列` |
 
-## 確認・配布
+複数行・列は先頭と末尾の要素名を使い、空欄なら行番号・列記号で補います。リンク先は選択した範囲全体です。
+
+## 待ち時間とエラー
+
+行・列の要素名はGoogleからCSVで取得するため、コピーまで待ち時間があります。一時的な失敗は最大2回再試行します。保存前の変更は反映されない場合があります。
+
+失敗が続く場合は、表示されたエラーを添えて[Issues](https://github.com/TsukumiStudio/MornSheetLinkExtension/issues)へ報告してください。タブIDを取得できない場合はシートを開き直してください。
+
+日本語・英語のメニューに対応。名前付き範囲と離れた複数範囲は対象外です。Googleの画面変更で動かなくなる場合があります。Google以外への送信やクリップボードの読み取りはありません。詳細は[プライバシーポリシー](docs/privacy.md)を参照してください。
+
+## テスト・配布
 
 ```sh
 node --test content.test.cjs
@@ -33,27 +42,12 @@ python3 scripts/package.py
 python3 scripts/check_package.py
 ```
 
-ZIPは `dist/` に生成します。PSD・説明文・テストは含みません。
+ZIPは `dist/MornSheetLinkExtension-0.1.3.zip` に生成します。実行用ファイルのみを含みます。ストア用の画像・掲載文は[申請手順](docs/store-listing.md)を参照してください。
 
-Chromeで `7:8`・`B2:D10` のメニュー表示・再表示・コピー成功を確認済みです。実際の貼り付け先でのリンク名・移動先と、別タブへの切り替えは確認が必要です。
+通信の再現テストは `python3 scripts/check_fetch.py`。ローカルの模擬サーバーとChromeを使います。macOS以外では環境変数 `CHROME` に実行ファイルを指定します。この環境ではChrome起動がタイムアウトしており、最新変更の実ブラウザ検証は未完了です。
 
-申請素材は `dist/chrome-web-store/`。入力文と残る作業は [申請手順](docs/store-listing.md)、情報の扱いは [プライバシーポリシー](docs/privacy.md) を参照してください。2026年9月8日に審査提出済み。現在は審査結果待ちです。
+## 画像の原稿
 
-## 画像を編集する
+[OGP PSD](assets/source/ogp-editable.psd)・[アイコンPSD](assets/source/icon.psd)・[紹介画像PSD](assets/source/thumbnail.psd)。OGPはPhotoshopで文字を編集し、PNGを書き出します。
 
-| 原稿 | 内容・編集方法 |
-| --- | --- |
-| [OGP PSD](assets/source/ogp-editable.psd)／[PNG](assets/ogp-editable.png) | FHD。文字10個を直接編集可能。全21要素・5グループ。文字以外はラスターレイヤー。Photoshopで編集しPNGを書き出す。 |
-| [アイコンPSD](assets/source/icon.psd)／[SVG](assets/source/icon.svg) | 512×512、4ラスターレイヤー。SVGで形状を編集可能。 |
-| [紹介画像PSD](assets/source/thumbnail.psd)／[SVG](assets/source/promo.svg) | 440×280、文字を含む6ラスターレイヤー。文言はSVGで編集し `python3 scripts/build_thumbnail.py` で再生成。 |
-
-配色はMornDesktopTubeのOGPと [TSUKUMI STUDIO](https://tsukumistudio.com/) に合わせています。
-提出画像：[アイコン](icons/icon-128.png)・[紹介画像](assets/promo-440x280.png)・[スクリーンショット](assets/store-screenshot-1280x800.png)。
-
-- `python3 scripts/check_editable_ogp.py`：OGPの文字・レイヤー構成を検証。
-- `python3 scripts/build_icon.py`：アイコンを再生成。SVG・PSDへの手編集は上書きされます。
-- `python3 scripts/build_thumbnail.py ogp`：比較用のラスターPSDを生成。編集用OGPは上書きしません。
-- `python3 scripts/prepare_editable_ogp.py`：OGP再構築用の11要素と文字仕様を `dist/editable-ogp/` へ出力。
-
-画像の生成にはImageMagick・Pillow・psd-toolsが必要です。拡張の利用には不要です。
-実装資料：[content scripts](https://developer.chrome.com/docs/extensions/develop/concepts/content-scripts)・[clipboardWrite](https://developer.chrome.com/docs/extensions/reference/permissions-list)。
+再生成・検証用スクリプトは `scripts/` にあります。画像生成にはImageMagick・Pillow・psd-toolsが必要です。`build_icon.py` はSVG・PSDへの手編集を上書きします。
