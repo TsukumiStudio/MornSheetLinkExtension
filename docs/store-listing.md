@@ -40,9 +40,9 @@ Googleの公式製品ではありません。Googleの画面変更により動�
 | 言語・価格 | 日本語・無料 |
 | カテゴリ | 生産性のツールに該当する項目 |
 
-プライバシーポリシー：https://github.com/matsufriends/MornSheetLinkExtension/blob/main/docs/privacy.md
+プライバシーポリシー：https://github.com/TsukumiStudio/MornSheetLinkExtension/blob/main/docs/privacy.md
 
-サポート：https://github.com/matsufriends/MornSheetLinkExtension/issues
+サポート：https://github.com/TsukumiStudio/MornSheetLinkExtension/issues
 
 ## 提出ファイル
 

@@ -23,4 +23,4 @@ Morn Sheet Link Extension は、Google スプレッドシートの選択範囲�
 
 ## お問い合わせ
 
-[GitHub Issues](https://github.com/matsufriends/MornSheetLinkExtension/issues) へご連絡ください。
+[GitHub Issues](https://github.com/TsukumiStudio/MornSheetLinkExtension/issues) へご連絡ください。
