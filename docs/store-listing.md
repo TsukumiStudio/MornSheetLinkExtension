@@ -50,10 +50,6 @@ Googleの公式製品ではありません。Googleの画面変更により動�
 | --- | --- |
 | ZIP | `dist/MornSheetLinkExtension-0.1.3.zip` |
 | アイコン | `icons/icon-128.png` |
-| スクリーンショット | `assets/store-screenshot-1280x800.png` |
-| 紹介画像 | `assets/promo-440x280.png` |
-
-一式は `dist/chrome-web-store/` にあります。スクリーンショットはOGPを1280×800に調整した画像です。PSDは提出しません。
 
 ## 審査用の操作手順
 
