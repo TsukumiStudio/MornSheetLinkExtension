@@ -1,49 +1,13 @@
 (() => {
-  document.documentElement.setAttribute('data-morn-sheet-link', '0.1.3');
+  document.documentElement.setAttribute('data-morn-sheet-link', '0.1.4');
   const label = "この範囲へのリンクを取得Ex";
-  const originalLabels = [
-    "この範囲へのリンクを取得", "このセルへのリンクを取得",
-    "この範囲へのリンクを作成", "このセルへのリンクを作成",
-    "Get link to this range", "Get link to this cell",
+  const menuLabels = [
+    "セルでの他の操作項目を表示", "行での他の操作項目を表示", "列での他の操作項目を表示",
+    "View more cell actions", "View more row actions", "View more column actions",
   ].map(text => text.replace(/\s/g, '').toLowerCase());
   let copying = false;
 
-  async function readHeading(pageUrl, gid, cell) {
-    const url = new URL(pageUrl);
-    const authuser = url.searchParams.get('authuser');
-    url.pathname = url.pathname.replace(/\/edit\/?$/, '/export');
-    url.hash = '';
-    url.search = new URLSearchParams({ format: 'csv', gid, range: cell });
-    if (authuser !== null) url.searchParams.set('authuser', authuser);
-    for (let attempt = 0; attempt < 3; attempt++) {
-      let retryable = true;
-      try {
-        // ponytail: single-cell CSV export; update this endpoint if Sheets changes it.
-        // Authenticate on docs.google.com; the CSV redirect uses wildcard CORS without credentials.
-        const response = await fetch(url.href, { credentials: 'same-origin', cache: 'no-store' });
-        const type = response.headers.get('content-type') ?? 'Content-Typeなし';
-        const login = response.url && new URL(response.url).hostname === 'accounts.google.com';
-        retryable = !login && (response.ok || response.status === 408 || response.status === 429 || response.status >= 500);
-        if (!response.ok || !type.toLowerCase().includes('text/csv')) {
-          throw new Error(login ? 'ログイン画面に転送されました' : `HTTP ${response.status} / ${type}`);
-        }
-        const csv = (await response.text()).replace(/^\uFEFF/, '').replace(/\r?\n$/, '');
-        retryable = false;
-        // Reject anything other than one CSV cell, including login/error pages.
-        if (!/^(?:"(?:[^"]|"")*"|[^",\r\n]*)$/.test(csv)) {
-          throw new Error('取得したCSVが1セル分ではありません');
-        }
-        return (csv.startsWith('"') ? csv.slice(1, -1).replaceAll('""', '"') : csv).trim();
-      } catch (error) {
-        if (!retryable || attempt === 2) {
-          throw new Error(`${cell}の要素名を取得できません（${error.message}）。`);
-        }
-        await new Promise(resolve => setTimeout(resolve, 500 * (attempt + 1)));
-      }
-    }
-  }
-
-  async function readLink() {
+  function readLink() {
     const file = document.querySelector('input.docs-title-input')?.value?.trim();
     const sheet = document.querySelector('.docs-sheet-active-tab .docs-sheet-tab-name')?.textContent?.trim();
     const range = document.querySelector('#t-name-box')?.value?.trim().toUpperCase();
@@ -58,14 +22,36 @@
     if (/^(?:[A-Z]+:[A-Z]+|\d+:\d+)$/.test(range)) {
       const [start, end] = range.split(':');
       const isRow = /^\d/.test(range);
-      const headings = [];
-      for (const index of start === end ? [start] : [start, end]) {
-        headings.push(await readHeading(url.href, gid, isRow ? `A${index}` : `${index}1`) || index);
+      const nameBox = document.querySelector('#t-name-box');
+      const formula = document.querySelector('#t-formula-bar-input .cell-input');
+      if (!formula) throw new Error('数式バーを表示してから、もう一度コピーしてください。');
+      const scroll = [...document.querySelectorAll('.native-scrollbar')].map(element =>
+        ({ element, left: element.scrollLeft, top: element.scrollTop }));
+      const select = value => {
+        nameBox.value = value;
+        nameBox.dispatchEvent(new KeyboardEvent('keydown', {
+          key: 'Enter', code: 'Enter', keyCode: 13, which: 13, bubbles: true,
+        }));
+      };
+      try {
+        const headings = (start === end ? [start] : [start, end]).map(index => {
+          select(isRow ? `A${index}` : `${index}1`);
+          // ponytail: read literal headings from Sheets' formula bar; formula results need a displayed-value source.
+          const heading = formula.innerText.trim();
+          if (heading.startsWith('=')) throw new Error('数式で作られた要素名は取得できません。');
+          return heading || index;
+        });
+        selection = `${headings.join('〜')}${isRow ? '行' : '列'}`;
+      } finally {
+        select(range);
+        for (const { element, left, top } of scroll) {
+          element.scrollLeft = left;
+          element.scrollTop = top;
+        }
       }
-      selection = `${headings.join('〜')}${isRow ? '行' : '列'}`;
     }
-    url.search = '';
-    url.hash = `gid=${gid}&range=${encodeURIComponent(range)}`;
+    url.search = `gid=${gid}`;
+    url.hash = `gid=${gid}&range=${range}`;
     const text = `${file}-${sheet}-${selection}`;
     const anchor = document.createElement('a');
     anchor.href = url.href;
@@ -78,7 +64,11 @@
     copying = true;
     button.textContent = 'コピー中…';
     try {
-      const { text, html } = await readLink();
+      if (!document.hasFocus()) {
+        throw new Error('シートをクリックしてから、もう一度コピーしてください。');
+      }
+      const { text, html } = readLink();
+      // Read the displayed heading and start writing in the same user action.
       await navigator.clipboard.write([new ClipboardItem({
         'text/html': new Blob([html], { type: 'text/html' }),
         'text/plain': new Blob([text], { type: 'text/plain' }),
@@ -101,10 +91,11 @@
     for (const original of document.querySelectorAll('[role="menuitem"], .goog-menuitem')) {
       const text = original.textContent.replace(/\s/g, '').toLowerCase();
       if (original.matches('.morn-sheet-link') ||
-          !originalLabels.some(label => text.startsWith(label))) continue;
-      const existing = original.parentElement.querySelector('.morn-sheet-link');
+          !menuLabels.some(label => text.startsWith(label))) continue;
+      const menu = original.parentElement;
+      const existing = menu.querySelector('.morn-sheet-link');
       if (existing) {
-        if (original.nextElementSibling !== existing) original.after(existing);
+        if (menu.lastElementChild !== existing) menu.append(existing);
         continue;
       }
       const button = document.createElement('button');
@@ -124,7 +115,7 @@
         event.stopPropagation();
         if (event.detail === 0) void copyLink(button);
       });
-      original.after(button);
+      menu.append(button);
     }
   }
 
